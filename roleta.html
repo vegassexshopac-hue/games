@@ -153,6 +153,8 @@ em{font-style:normal}
 /* QR */
 .qrcard{background:#fff;border-radius:calc(var(--u)*3.4);padding:calc(var(--u)*2.6);width:min(66vw,36vh,460px);aspect-ratio:1;box-shadow:0 0 0 6px var(--gold),0 0 80px rgba(255,199,44,.35)}
 .qrcard svg{width:100%;height:100%;display:block}
+.wabtn{display:inline-flex;align-items:center;gap:calc(var(--u)*2.4);color:#fff;background:linear-gradient(175deg,#3fe07a,#25D366 45%,#128C4A);box-shadow:0 calc(var(--u)*1.1) 0 #0b5a2e,0 22px 60px rgba(37,211,102,.4);text-decoration:none}
+.wabtn svg{width:1.1em;height:1.1em;flex:none}
 .codebox{display:grid;gap:4px}
 .codebox .k{font-family:var(--display);letter-spacing:.32em;font-size:calc(var(--u)*2.4);color:var(--muted)}
 .codebox .v{font-family:var(--display);letter-spacing:.24em;font-size:calc(var(--u)*9);line-height:.9;color:var(--gold);font-variant-numeric:tabular-nums}
@@ -298,11 +300,12 @@ td.code{font-family:var(--display);letter-spacing:.14em;font-size:17px}
   <p class="eyebrow" id="qSaud"></p>
   <h1 class="h1" style="font-size:calc(var(--u)*8.5)" id="qPremio"></h1>
   <div class="qrcard" id="qr"></div>
-  <p class="lede" style="font-style:normal;font-family:var(--body);font-size:calc(var(--u)*3)">Aponte a câmera do celular e <b style="color:var(--gold)">envie a mensagem</b>. O cupom só vale depois de enviar.</p>
+  <a class="cta wabtn pulse" id="btnWhats" href="#" target="_blank" rel="noopener" hidden><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .6l-.4.6-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.5.3.1.2.1.7-.1 1.4z"/></svg>ENVIAR NO WHATSAPP</a>
+  <p class="lede" id="qInstr" style="font-style:normal;font-family:var(--body);font-size:calc(var(--u)*3)">Aponte a câmera do celular e <b style="color:var(--gold)">envie a mensagem</b>. O cupom só vale depois de enviar.</p>
   <div class="codebox"><span class="k">SEU CÓDIGO</span><span class="v" id="qCod"></span></div>
   <p class="fine" id="qVal"></p>
   <div class="aviso" id="qAviso"></div>
-  <div class="btnrow"><div class="ring" aria-hidden="true"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="17" fill="none" stroke="#2a2024" stroke-width="3"/><circle id="ringArc" cx="20" cy="20" r="17" fill="none" stroke="#FFC72C" stroke-width="3" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="0"/></svg><b id="qConta"></b></div><button class="cta gold" id="btnFinal" type="button">FINALIZAR</button></div>
+  <div class="btnrow"><div class="ring" id="ringBox" aria-hidden="true"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="17" fill="none" stroke="#2a2024" stroke-width="3"/><circle id="ringArc" cx="20" cy="20" r="17" fill="none" stroke="#FFC72C" stroke-width="3" stroke-linecap="round" stroke-dasharray="106.8" stroke-dashoffset="0"/></svg><b id="qConta"></b></div><button class="cta gold" id="btnFinal" type="button">FINALIZAR</button></div>
 </section>
 
 <!-- 6. MENOR -->
@@ -359,7 +362,7 @@ const PADRAO = [
  {curto:'FRETE\nGRÁTIS',chance:8,tipo:'servico',custo:12,nome:'FRETE GRÁTIS',sub:'entrega grátis em Rio Branco',regra:'Peça a entrega grátis ao fechar a compra, só na cidade.',icone:'caminhao'},
  {curto:'KIT VIP',chance:3,tipo:'produto',custo:60,destaque:true,nome:'KIT VIP',sub:'Kit VIP montado pela casa',regra:'Sorte grande! Retire o kit no caixa em compras a partir de R$ 100.',icone:'sacola'}
 ];
-const AJ_PADRAO = {validadeDias:30,bloqueioDias:30,segundosPremio:45,segundosOcioso:60,pinAdmin:'2580',whatsappLoja:'5568992822275',
+const AJ_PADRAO = {validadeDias:30,bloqueioDias:30,segundosPremio:45,segundosOcioso:60,modo:'auto',pinAdmin:'2580',whatsappLoja:'5568992822275',
   mensagemWhats:'Roleta Las Vegas! Nome: {NOME} | Zap: {ZAP} | Nasc: {NASC} | Premio: {PREMIO} | Cod: {CODIGO}',idadeMinima:18};
 const K_CAD='lv_roleta_cadastros', K_OLD='lv_roleta_config', K_PREM='lv_roleta_premios_v2', K_AJ='lv_roleta_ajustes_v2', K_SOM='lv_roleta_som';
 
@@ -581,6 +584,8 @@ function linkWhats(d){d=d||{nome,fone,nasc,premio:premio&&premio.nome,codigo};
   const msg=String(aj.mensagemWhats).replace('{NOME}',String(d.nome).trim().slice(0,28)).replace('{ZAP}',mFone(d.fone)).replace('{NASC}',mNasc(d.nasc)).replace('{PREMIO}',d.premio||'').replace('{CODIGO}',d.codigo);
   return 'https://wa.me/'+String(aj.whatsappLoja).replace(/\D/g,'')+'?text='+encodeURIComponent(msg)}
 let iConta=null;
+function ehTotem(){if(aj.modo==='totem')return true;if(aj.modo==='celular')return false;
+  const tela=Math.min(screen.width,screen.height);return !(/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)&&tela<700)}
 function mostrarQR(){
   $('#qSaud').textContent='FALTA UM TOQUE, '+soPrimeiro(nome).toUpperCase()+'!';
   $('#qPremio').textContent=premio.nome;$('#qCod').textContent=codigo;
@@ -588,8 +593,17 @@ function mostrarQR(){
   let av=premio.regra||'Apresente o código no caixa.';
   if(repetido)av+=' Atenção: esse WhatsApp já pegou um cupom nos últimos '+aj.bloqueioDias+' dias. Vale um por cliente nesse período, o caixa confere.';
   const a=$('#qAviso');a.textContent=av;a.classList.toggle('alerta',repetido);
-  try{const q=window.qrcode(0,'L');q.addData(linkWhats());q.make();$('#qr').innerHTML=q.createSvgTag({cellSize:8,margin:1,scalable:true})}
-  catch(e){$('#qr').innerHTML='<p style="color:#B31E16;font-weight:700;padding:24px">Não foi possível gerar o QR. Confira o número do WhatsApp nos ajustes.</p>'}
+  const totem=ehTotem(),wa=$('#btnWhats');
+  $('#qr').hidden=!totem;wa.hidden=totem;$('#ringBox').hidden=!totem;clearInterval(iConta);
+  if(totem){
+    $('#qInstr').innerHTML='Aponte a câmera do celular e <b style="color:var(--gold)">envie a mensagem</b>. O cupom só vale depois de enviar.';
+    try{const q=window.qrcode(0,'L');q.addData(linkWhats());q.make();$('#qr').innerHTML=q.createSvgTag({cellSize:8,margin:1,scalable:true})}
+    catch(e){$('#qr').innerHTML='<p style="color:#B31E16;font-weight:700;padding:24px">Não foi possível gerar o QR. Confira o número do WhatsApp nos ajustes.</p>'}
+  }else{
+    wa.href=linkWhats();
+    $('#qInstr').innerHTML='Toque no botão verde e <b style="color:var(--gold)">envie a mensagem</b> que já vem pronta. O cupom só vale depois de enviar.';
+    ir('qr');return;
+  }
   ir('qr');let resta=aj.segundosPremio,tot=resta;const arc=$('#ringArc');
   const pinta=()=>{$('#qConta').textContent=resta;arc.style.strokeDashoffset=(106.8*(1-resta/tot)).toFixed(1)};pinta();
   clearInterval(iConta);iConta=setInterval(()=>{resta--;pinta();if(resta<=0){clearInterval(iConta);voltarInicio()}},1000);
@@ -678,8 +692,10 @@ function pAj(){
   $('#aba-ajustes').innerHTML='<div class="cfg">'+f('whatsappLoja','WhatsApp da loja (com 55 e DDD)','text','inputmode="numeric"')+f('pinAdmin','Senha do painel','text','inputmode="numeric" maxlength="8"')+
    f('validadeDias','Validade do cupom (dias)','number','min="1"')+f('bloqueioDias','1 cupom por WhatsApp a cada (dias)','number','min="0"')+
    f('segundosPremio','Tela do QR fecha em (segundos)','number','min="15"')+f('segundosOcioso','Volta ao início se ninguém mexer (segundos)','number','min="20"')+
-   f('idadeMinima','Idade mínima','number','min="18"')+'</div>'+
+   f('idadeMinima','Idade mínima','number','min="18"')+
+   '<label>Tela do cupom<select id="selModo" style="width:100%;font:inherit;font-size:15px;letter-spacing:0;text-transform:none;padding:9px 10px;border-radius:10px;border:1px solid #33282b;background:#0b0809;color:var(--ink)"><option value="auto">Automático (celular = botão, totem = QR)</option><option value="totem">Sempre QR code (totem)</option><option value="celular">Sempre botão do WhatsApp</option></select></label></div>'+
    '<label class="note" style="display:grid;gap:6px;margin-top:6px">MENSAGEM QUE A CLIENTE ENVIA (use {NOME} {ZAP} {NASC} {PREMIO} {CODIGO})<input data-k="mensagemWhats" type="text" value="'+esc(aj.mensagemWhats)+'" style="width:100%;font:inherit;padding:10px;border-radius:10px;border:1px solid #33282b;background:#0b0809;color:var(--ink)"></label>';
+  const sm=$('#selModo');sm.value=aj.modo||'auto';sm.onchange=()=>{aj.modo=sm.value;gravar(K_AJ,aj);toast('Salvo')};
   $('#aba-ajustes').querySelectorAll('input[data-k]').forEach(inp=>inp.onchange=()=>{const k=inp.dataset.k;let v=inp.value.trim();if(inp.type==='number')v=Math.max(+inp.min||0,+v||0);if(k==='pinAdmin'&&!/^\d{4,8}$/.test(v)){toast('A senha precisa ter de 4 a 8 números');inp.value=aj.pinAdmin;return}aj[k]=v;gravar(K_AJ,aj);toast('Salvo')});
 }
 $('#btnTestar').onclick=()=>{const u=linkWhats({nome:'TESTE DA LOJA',fone:'68999999999',nasc:'01011990',premio:premios[0].nome,codigo:'LVTESTE'});const w=window.open(u,'_blank');if(!w){navigator.clipboard&&navigator.clipboard.writeText(u).catch(()=>{});toast('Link copiado: '+u.slice(0,40)+'…')}};
