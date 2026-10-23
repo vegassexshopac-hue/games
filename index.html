@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Games Las Vegas</title>
+<meta name="description" content="Jogos da Las Vegas Sex Shop: gire a roleta da sorte e ganhe prêmios na loja.">
+<meta name="theme-color" content="#07060a">
+<link rel="icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&family=Bebas+Neue&family=Playfair+Display:ital@1&display=swap">
+<style>
+/* Fliperama da casa: letreiro no topo, jogos como fichas de cassino em grade. */
+:root{
+  --bg:#07060a;--bg2:#140b0e;--card:#130e10;--line:#2a2024;
+  --ink:#fff8ee;--muted:#b9aca6;--dim:#76696a;
+  --red:#E63329;--red2:#B31E16;--gold:#FFC72C;--gold2:#C99A12;
+  --display:"Bebas Neue","Arial Narrow",Impact,sans-serif;
+  --body:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --serif:"Playfair Display",Georgia,serif;
+  color-scheme:dark;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;background:var(--bg);color:var(--ink);font-family:var(--body);
+  background-image:radial-gradient(70% 45% at 50% 0%,rgba(230,51,41,.25),transparent 70%),linear-gradient(var(--bg2),var(--bg) 50%)}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:3px solid var(--gold);outline-offset:4px}
+.bulbs{height:12px;background:radial-gradient(circle,var(--gold) 0 3px,transparent 4px) 0 50%/24px 12px repeat-x;animation:run 1.2s linear infinite}
+@keyframes run{to{background-position-x:24px}}
+.wrap{max-width:1080px;margin:0 auto;padding-block:48px 64px;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px));display:grid;gap:48px}
+header{display:grid;justify-items:center;text-align:center;gap:14px}
+header img{width:min(320px,70vw);height:auto;filter:drop-shadow(0 10px 40px rgba(230,51,41,.35))}
+.eyebrow{font-family:var(--display);letter-spacing:.34em;font-size:18px;color:var(--gold)}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(56px,11vw,112px);line-height:.85;text-wrap:balance}
+h1 em{font-style:normal;color:var(--red);text-shadow:0 0 30px rgba(230,51,41,.7),0 0 90px rgba(230,51,41,.35)}
+.lede{font-family:var(--serif);font-style:italic;font-size:clamp(18px,2.4vw,22px);color:var(--muted);max-width:34ch;line-height:1.35}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px}
+.game{position:relative;display:grid;grid-template-rows:auto 1fr;border-radius:22px;overflow:hidden;background:var(--card);border:1px solid var(--line);transition:transform .2s,border-color .2s,box-shadow .2s;min-width:0}
+a.game:hover{transform:translateY(-4px);border-color:var(--gold);box-shadow:0 20px 50px rgba(0,0,0,.5),0 0 0 1px var(--gold)}
+.art{aspect-ratio:16/10;display:grid;place-items:center;background:radial-gradient(circle at 50% 60%,rgba(230,51,41,.35),transparent 65%),#0d090b;border-bottom:1px solid var(--line)}
+.art canvas{width:62%;height:auto;aspect-ratio:1}
+.art.soon{background:repeating-linear-gradient(135deg,#0d090b 0 14px,#110c0e 14px 28px)}
+.art.soon span{font-family:var(--display);font-size:64px;color:#2e2427}
+.info{padding:20px 22px 22px;display:grid;gap:8px;align-content:start}
+.tag{justify-self:start;font-family:var(--display);letter-spacing:.2em;font-size:14px;padding:4px 10px;border-radius:999px;background:var(--gold);color:#1a1206}
+.tag.off{background:#231b1e;color:var(--dim)}
+.info h2{font-family:var(--display);font-weight:400;font-size:38px;line-height:.95;letter-spacing:.02em}
+.info p{color:var(--muted);line-height:1.5;font-size:15px}
+.play{margin-top:8px;justify-self:start;font-family:var(--display);letter-spacing:.16em;font-size:20px;padding:12px 22px;border-radius:999px;color:#fff;background:linear-gradient(175deg,#F75A4B,var(--red) 45%,var(--red2));box-shadow:0 5px 0 #6B0E08}
+footer{text-align:center;display:grid;gap:8px;color:var(--dim);font-size:13px;letter-spacing:.06em}
+footer a{color:var(--gold)}
+@media (prefers-reduced-motion:reduce){.bulbs{animation:none}}
+</style>
+</head>
+<body>
+<div class="bulbs"></div>
+<main class="wrap">
+  <header>
+    <img src="logo.png" alt="Las Vegas Sex Shop" width="460" height="310">
+    <p class="eyebrow">GAMES DA CASA</p>
+    <h1>VEM <em>JOGAR</em></h1>
+    <p class="lede">Joguinhos da Las Vegas para brincar na loja e ganhar mimos de verdade.</p>
+  </header>
+
+  <section class="grid" aria-label="Jogos">
+    <a class="game" href="roleta/">
+      <div class="art"><canvas id="mini" width="400" height="400" aria-hidden="true"></canvas></div>
+      <div class="info">
+        <span class="tag">NO TOTEM DA LOJA</span>
+        <h2>Roleta da Sorte</h2>
+        <p>Gire, ganhe e valide o cupom pelo WhatsApp. Toda cliente sai com prêmio.</p>
+        <span class="play">JOGAR</span>
+      </div>
+    </a>
+    <div class="game" aria-disabled="true">
+      <div class="art soon"><span>EM BREVE</span></div>
+      <div class="info">
+        <span class="tag off">NOVO JOGO</span>
+        <h2>Vem mais por aí</h2>
+        <p>Novos jogos para chá de lingerie, casais e clientes VIP.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Prêmios válidos só nas lojas físicas · Para maiores de 18 anos</p>
+    <p><a href="https://www.lasvegassexshop.com.br">lasvegassexshop.com.br</a></p>
+  </footer>
+</main>
+<div class="bulbs"></div>
+<script>
+(function(){
+const c=document.getElementById('mini');if(!c)return;const x=c.getContext('2d');const n=10,C=200,r=180;let a=0;
+const red=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function draw(){x.clearRect(0,0,400,400);x.save();x.translate(C,C);x.rotate(a);
+  for(let i=0;i<n;i++){const a0=i*2*Math.PI/n;x.beginPath();x.moveTo(0,0);x.arc(0,0,r,a0,a0+2*Math.PI/n);x.closePath();
+    x.fillStyle=i===n-1?'#FFC72C':(i%2?'#18141a':'#D8271C');x.fill();x.strokeStyle='rgba(255,199,44,.6)';x.lineWidth=2;x.stroke()}
+  x.restore();x.lineWidth=10;x.strokeStyle='#B31E16';x.beginPath();x.arc(C,C,r+6,0,7);x.stroke();
+  x.lineWidth=3;x.strokeStyle='#FFC72C';x.beginPath();x.arc(C,C,r,0,7);x.stroke();
+  const g=x.createRadialGradient(C-8,C-10,4,C,C,34);g.addColorStop(0,'#FFF6D8');g.addColorStop(.5,'#FFC72C');g.addColorStop(1,'#8A6300');
+  x.fillStyle=g;x.beginPath();x.arc(C,C,34,0,7);x.fill();
+  x.fillStyle='#FFC72C';x.beginPath();x.moveTo(C,42);x.lineTo(C-16,8);x.lineTo(C+16,8);x.closePath();x.fill();
+  if(!red){a+=.004;requestAnimationFrame(draw)}}
+draw();
+})();
+</script>
+</body>
+</html>
